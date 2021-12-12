@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\MyPage\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,4 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//f
+Route::prefix('mypage')
+->namespace('Mypage')
+->middleware('auth')
+->group(function(){
+    Route::get('edit-profile',[ProfileController::class,'showProfileEditForm'] )->name('mypage.edit-profile');
+    Route::post('edit-profile',[ProfileController::class,'editProfile'])->name('mypage.edit-profile');
+});
