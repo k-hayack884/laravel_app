@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equ
+  iv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="main.css">
@@ -11,10 +12,17 @@
   <div id="app">
     <h2>光天使を召喚する</h2>
 <form v-on:submit.prevent>
-  <input type="text" v-mode="newItem">
+  <input type="text" v-model="newItem">
   <button v-on:click="books">ﾌﾞｯｸｽ‼</button>
 </form>
-<pre>{{ $data }}</pre>
+<ul>
+  <li v-for="(todo,index) in todos">
+    <input type="checkbox" v-model="todo.isDone">
+   <span v-bind:class="{done:todo.isDone}"> {{ todo.item }}</span>
+  <button v-on:click="sarugasso(index)">サルガッソ！</button>
+  </li>
+</ul>
+<!--<pre>{{ $data }}</pre>-->
   </div>
   <script src="https://unpkg.com/vue@3.1.5"></script>
   <script src="main.js"></script>
