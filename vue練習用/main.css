@@ -1,4 +1,4 @@
-p{
+span{
     color:blue
 }
 #app ul{
@@ -6,4 +6,7 @@ p{
 }
 #app li>span.done{
     text-decoration:line-through;
+}
+[v-cloak]{
+    display: none;
 }
