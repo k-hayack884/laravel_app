@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MyPage\ProfileController;
+use App\Http\Controllers\sellController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +21,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware('auth')
+->group(function(){
+    Route::get('sell',[SellController::class,'showSellForm'])->name('sell');
+});
+
 Route::prefix('mypage')
 ->namespace('Mypage')
 ->middleware('auth')
