@@ -1,25 +1,18 @@
 const app=Vue.createApp({
   data:()=>({
-    newItem:'',
-    todos:[]
+    
   }),
-  methods:{
-    books:function(){
-      //console.log('ﾌﾞｯｸｽ!')
-      if(this.newItem==='')return
+  computed:{
+computedNumber:function(){
+  return Math.random()
 
-      let todo={
-        item:this.newItem,
-        isDone: false
-      }
-      this.todos.push(todo)
-      this.newItem=''
-    },
-    sarugasso:function(index){
-      //console.log('姑息な手を')
-      //console.log(index)
-      this.todos.splice(index,1)
+}
+  },
+  methods:{
+    methodsNumber:function(){
+      return Math.random()
     }
+    
   }
 })
 app.mount('#app')
