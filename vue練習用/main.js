@@ -1,16 +1,14 @@
 const app=Vue.createApp({
   data:()=>({
-    newItem:'',
-    todos:[]
+ message:'ブックス！',
   }),
-  methods:{
-    books:function(){
-      console.log('ﾌﾞｯｸｽ!')
-      let todo={
-        item:this.newItem
-      }
-      this.todos.push(todo)
+  computed:{
+    reversedMessage:function(){
+      return this.message.split('').reverse().join('')
     }
+  },
+  methods:{
+
   }
 })
 app.mount('#app')

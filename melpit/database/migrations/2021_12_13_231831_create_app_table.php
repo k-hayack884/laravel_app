@@ -19,6 +19,23 @@ class CreateAppTable extends Migration
             $table->integer('sort_no');
             $table->timestamps();
         });
+
+        Schema::create('primary_categories',function(Blueprint $table){
+            $table->id();
+            $table->string('name');
+            $table->integer('sort_no');
+            $table->timestamps();
+         });
+
+         Schema::create('secondary_categories',function(Blueprint $table){
+            $table->id();
+            $table->unsignedBigInteger('primary_category_id');
+            $table->string('name');
+            $table->integer('sort_no');
+            $table->timestamps();
+            $table->dropForeign('secondary_categories_primary_category_id');
+            $table->foreign('primary_category_id')->references('id')->on('primary_categories')->onDelete('cascade');
+         });
     }
 
     /**
@@ -29,5 +46,7 @@ class CreateAppTable extends Migration
     public function down()
     {
         Schema::dropIfExists('item_conditions');
+        Schema::dropIfExists('primary_categories');
+        Schema::dropIfExists('secondary_categories');
     }
 }
