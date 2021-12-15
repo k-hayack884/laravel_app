@@ -1033,10 +1033,6 @@
                 "thumbnail",
                 "watermark"
             ],
-            "support": {
-                "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/2.7.0"
-            },
             "funding": [
                 {
                     "url": "https://www.paypal.me/interventionphp",
