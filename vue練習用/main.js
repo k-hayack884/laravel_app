@@ -1,14 +1,14 @@
 const app=Vue.createApp({
   data:()=>({
- message:'ブックス！',
+message:''
   }),
-  computed:{
-    reversedMessage:function(){
-      return this.message.split('').reverse().join('')
-    }
-  },
   methods:{
+    clickHandler:function(){
 
+      //console.log(message)
+      this.message=new Date()
+    }
   }
+
 })
 app.mount('#app')
