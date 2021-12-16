@@ -65,7 +65,7 @@ class SellController extends Controller
           $filePath=Storage::disk('public')
           ->putFile('item-images',new File($tempPath));
           return basename($filePath);
-          
+
       }
            /**
       * 一時的なファイルを生成してパスを返します。
@@ -74,8 +74,8 @@ class SellController extends Controller
       */
       private function makeTempPath(): string
       {
-          $tmp_fp=tepfile();
+          $tmp_fp=tmpFile();
           $meta=stream_get_meta_data($tmp_fp);
-          return $meta["url"];
+          return $meta["uri"];
       }
 }

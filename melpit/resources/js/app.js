@@ -6,7 +6,7 @@ import { faAddressCard, faClock } from '@fortawesome/free-regular-svg-icons'
 import { faSearch, faStoreAlt, faShoppingBag, faSignOutAlt, faYenSign, faCamera } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faSearch, faAddressCard, faStoreAlt, faShoppingBag, faSignOutAlt, faYenSign, faClock, faCamera);
-
+window.addEventListener('DOMContentLoaded', () => {
 dom.watch();
 
 
@@ -19,3 +19,4 @@ document.querySelector('.image-picker input')
           };
           reader.readAsDataURL(input.files[0]);
       });
+});
