@@ -12,7 +12,7 @@ class Item extends Model
          // 購入済み
          const STATE_BOUGHT = 'bought';
 
-    public function secondaryCategory()
+         public function secondaryCategory()
     {
         return $this->belongsTo(SecondaryCategory::class);
     }
