@@ -19,7 +19,7 @@ class ItemsController extends Controller
             list($categoryType,$categoryID)=explode(':',$request->input('category'));
             if($categoryType==='primary'){
                 $query->whereHas('secondaryCategory',function($query)use($categoryID){
-                    $query->where('primary_category_id',$categoryID);     
+                    $query->where('primary_category_id',$categoryID);
                 });
             }elseif($categoryType==='secondary'){
                 $query->where('secondary_category_id',$categoryID);
@@ -64,13 +64,13 @@ class ItemsController extends Controller
         public function buyItem(Request $request, Item $item)
         {
             $user = Auth::user();
-    
+
             if (!$item->isStateSelling) {
                 abort(404);
             }
-    
+
             $token = $request->input('card-token');
-    
+
             try {
                 $this->settlement($item->id, $item->seller->id, $user->id, $token);
             } catch (\Exception $e) {
@@ -79,27 +79,27 @@ class ItemsController extends Controller
                     ->with('type', 'danger')
                     ->with('message', '購入処理が失敗しました。');
             }
-    
+
             return redirect()->route('item', [$item->id])
                 ->with('message', '商品を購入しました。');
         }
         private function settlement($itemID, $sellerID, $buyerID, $token)
      {
          DB::beginTransaction();
- 
+
          try {
              $seller = User::lockForUpdate()->find($sellerID);
              $item   = Item::lockForUpdate()->find($itemID);
- 
+
              if ($item->isStateBought) {
                  throw new \Exception('多重決済');
              }
- 
+
              $item->state     = Item::STATE_BOUGHT;
              $item->bought_at = Carbon::now();
              $item->buyer_id  = $buyerID;
              $item->save();
- 
+
              $seller->sales += $item->price;
              $seller->save();
 
@@ -115,8 +115,7 @@ class ItemsController extends Controller
              DB::rollBack();
              throw $e;
          }
- 
+
          DB::commit();
      }
-
 }
