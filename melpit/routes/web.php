@@ -26,7 +26,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware('auth')
 ->group(function(){
-    Route::get('items/{item}/buy', function () { return "商品購入画面";})->name('item.buy');
+    Route::get('items/{item}/buy',[itemsController::class,'showBuyItemForm'])->name('item.buy');
+    Route::post('items/{item}/buy',[itemsController::class],'buyItem')->name('item.buy');
     Route::get('sell',[SellController::class,'showSellForm'])->name('sell');
     Route::post('sell',[SellController::class,'sellItem'])->name('sell');
 
