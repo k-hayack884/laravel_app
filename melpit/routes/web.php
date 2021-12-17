@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MyPage\ProfileController;
 use App\Http\Controllers\MyPage\SoldItemsController;
 use App\Http\Controllers\sellController;
+use App\Http\Controllers\itemsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +17,7 @@ use App\Http\Controllers\sellController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('top');
+Route::get('',[ItemsController::class,'showItems'])->name('top');
 Route::get('items/{item}', function () {
     return "商品詳細";
 })->name('item');
