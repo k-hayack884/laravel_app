@@ -22,7 +22,7 @@ class Item extends Model
     }
 
     public function condtion(){
-        return $this->belongsTo(ItemCondition::class,'item_condition_id');
+        return $this->belongsTo(ItemCondition::class, 'item_condition_id');
     }
    
     public function getIsStateSellingAttribute()
