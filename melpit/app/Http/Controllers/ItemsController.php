@@ -16,7 +16,7 @@ class ItemsController extends Controller
                     $query->where('primary_category_id',$categoryID);     
                 });
             }elseif($categoryType==='secondary'){
-                $query->where('seondary_category_id',$categoryID);
+                $query->where('secondary_category_id',$categoryID);
             }
         }
         if($request->filled('keyword')){
