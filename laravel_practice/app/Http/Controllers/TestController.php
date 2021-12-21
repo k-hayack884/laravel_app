@@ -10,7 +10,7 @@ class TestController extends Controller
     public function index(){
         $values=Test::all();
         $test=DB::table('tests')->get();
-        dd($test);
+        //dd($test);
         return view('tests.test',compact('values'));
     }
 }
