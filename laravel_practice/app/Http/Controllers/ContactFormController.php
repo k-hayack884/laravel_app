@@ -48,16 +48,16 @@ class ContactFormController extends Controller
      */
     public function store(StoreContactForm $request)
     {
-        $contact= new ContactForm;
-        $contact->your_name=$request->input('your_name');
-        $contact->title=$request->input('title');
-        $contact->email=$request->input('email');
-        $contact->url=$request->input('url');
-        $contact->gender=$request->input('gender');
-        $contact->age=$request->input('age');
-        $contact->contact=$request->input('contact');
+        // $contact= new ContactForm;
+        // $contact->your_name=$request->input('your_name');
+        // $contact->title=$request->input('title');
+        // $contact->email=$request->input('email');
+        // $contact->url=$request->input('url');
+        // $contact->gender=$request->input('gender');
+        // $contact->age=$request->input('age');
+        // $contact->contact=$request->input('contact');
 
-        $contact->save();
+        // $contact->save();
         return redirect('contact/index');
     }
 
@@ -73,7 +73,7 @@ class ContactFormController extends Controller
         $contact=ContactForm::find($id);
         $gender=CheckFormData::checkGender($contact);
         $age=CheckFormData::checkAge($contact);
-        
+
         return view('contact.show',compact('contact','gender','age'));
     }
 
@@ -121,7 +121,7 @@ class ContactFormController extends Controller
     {
        $contact=ContactForm::find($id);
        $contact->delete();
-       
+
        return redirect('contact/index');
     }
 }

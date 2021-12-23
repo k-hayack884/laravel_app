@@ -23,6 +23,7 @@ Route::get('tests/test',[TestController::class,'index'])->name('tests.test');
 Route::group(['prefix'=>'contact','middleware'=>'auth'],function(){
     Route::get('index',[ContactFormController::class,'index'])->name('contact.index');
     Route::get('create',[ContactFormController::class,'create'])->name('contact.create');
+    Route::get('store', [ContactFormController::class, 'store'])->name('contact.store');
     Route::post('store',[ContactFormController::class,'store'])->name('contact.store');
     Route::get('show/{id}',[ContactFormController::class,'show'])->name('contact.show');
     Route::get('edit/{id}',[ContactFormController::class,'edit'])->name('contact.edit');
