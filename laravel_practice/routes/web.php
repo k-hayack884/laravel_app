@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactFormController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('tests/test',[TestController::class,'index'])->name('tests.test');
+Route::get('shops/index',[ShopController::class,'index'])->name('shops.index');
+
 
 Route::group(['prefix'=>'contact','middleware'=>'auth'],function(){
     Route::get('index',[ContactFormController::class,'index'])->name('contact.index');
