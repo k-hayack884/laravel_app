@@ -16,7 +16,10 @@
                     <form method="GET" action="{{ route('contact.create') }}">
                         <button type="submit" class="btn btn-primary">つくるお！</button>
                     </form>
-
+                    <form method="GET" action="{{ route('contact.index') }}" class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-1" name="search" type="search" placeholder="カードは拾った" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">カードは拾った</button>
+                      </form>
                     <table class="table">
                         <thead>
                           <tr>
@@ -39,6 +42,7 @@
                     @endforeach
                 </tbody>
                       </table>
+                      {{ $contacts->links() }}
                 </div>
             </div>
         </div>
