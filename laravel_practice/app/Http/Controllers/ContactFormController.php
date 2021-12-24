@@ -28,13 +28,13 @@ class ContactFormController extends Controller
         // ->paginate(5);
 
         //ケンサクフォーム
-        $query=DB::table('contact.forms');
+        $query=DB::table('contact_forms');
 
         if($search!==null){
             //全角を半角
-            $search_split=mb_convert_kana('search','s');
+            $search_split=mb_convert_kana($search,'s');
             //空白で区切る
-            $search_split2=preg_split('/[\s]+/',$search_split1,-1,PREG_SPLIT_NO_EMPTY);
+            $search_split2=preg_split('/[\s]+/',$search_split,-1,PREG_SPLIT_NO_EMPTY);
             //単語をループで回す
             foreach($search_split2 as $value){
                 $query->where('your_name','like','%'.$value.'%');
