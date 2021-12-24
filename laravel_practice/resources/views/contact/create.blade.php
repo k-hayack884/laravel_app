@@ -15,7 +15,7 @@
                     @endif
 
                     {{ __('つくるお！') }}
-                    <form method="POST" action="{{ route('contact.store') }}">
+                    <form method="POST" action="{{ route('contact.store',$contact()->id) }}">
                         @csrf
                         氏名
                         <input type="text" name="your_name"><br>
