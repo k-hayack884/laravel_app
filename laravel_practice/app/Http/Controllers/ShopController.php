@@ -11,6 +11,6 @@ class ShopController extends Controller
 {
     public function index(){
         $area_tokyo=Area::find(1)->shops;
-        dd($area_tokyo);
+        $shop=Shop::find(3)->area->name;
     }
 }

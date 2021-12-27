@@ -15,6 +15,22 @@ class RouteSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('areas')->insert([
+            [
+                'id' => 1,
+                'name' => 'ズァーク',
+                'sort_no' => 1
+            ],
+            [
+                'id' => 2,
+                'name' => 'ヒットマン',
+                'sort_no' => 2
+            ],
+            [
+                'id' => 3,
+                'name' => 'キュルル',
+                'sort_no' => 3
+            ],
+        ]);
     }
 }

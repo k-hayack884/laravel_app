@@ -19,17 +19,22 @@ class ShopSeeder extends Seeder
             [
                 'id'=>1,
                 'shop_name'=>'優勝塾',
-                'sort_no'=>1
+                'area_id'=>1
             ],
             [
                 'id'=>2,
                 'shop_'=>'オルガの墓',
-                'sort_no'=>2
+                'area_id'=>2
             ],
             [
                 'id'=>3,
                 'shop_name'=>'地獄',
-                'sort_no'=>3
+                'area_id'=>1
+            ],
+            [
+                'id' => 4,
+                'shop_name' => 'アカデミア',
+                'area_id' => 3
             ],
         ]);
     }
