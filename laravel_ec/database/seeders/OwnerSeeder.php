@@ -33,6 +33,24 @@ class OwnerSeeder extends Seeder
                 'email' => 'gurennno@akuma',
                 'password' => Hash::make('gurennnoakuma'),
                 'created_at' => '2021/01/04 11:11:11'
+            ],
+            [
+                'name' => 'ユベル',
+                'email' => 'zyuudai@suki',
+                'password' => Hash::make('koregaaidaro'),
+                'created_at' => '2021/02/04 11:11:11'
+            ],
+            [
+                'name' => 'ゾーク',
+                'email' => 'zooku@tintin',
+                'password' => Hash::make('zyuuhatikinn'),
+                'created_at' => '2021/06/04 11:11:11'
+            ],
+            [
+                'name' => 'ナッシュ',
+                'email' => 'shark@nassyu',
+                'password' => Hash::make('mazikkukonbo'),
+                'created_at' => '2021/03/03 11:11:11'
             ]
         ]);
     }
