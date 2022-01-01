@@ -21,7 +21,8 @@ class OwnersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth:admin');
     }
 
@@ -43,9 +44,8 @@ class OwnersController extends Controller
         // var_dump($q_first);
         // dd($e_all,$q_get,$q_first,$c_test);
 
-        $owners=Owner::select('id','name','email','created_at')->paginate(3);
-        return view('admin.owners.index',compact('owners'));
-
+        $owners = Owner::select('id', 'name', 'email', 'created_at')->paginate(3);
+        return view('admin.owners.index', compact('owners'));
     }
 
     /**
@@ -69,37 +69,38 @@ class OwnersController extends Controller
         // $request->name;
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:owners'
+            'email' => [
+                'required', 'string', 'email', 'max:255', 'unique:owners'
             ],
-            'password' => ['required','string' ,'confirmed', 'min:8'],
+            'password' => ['required', 'string', 'confirmed', 'min:8'],
         ]);
 
-try{
-    DB::transaction(function()use($request){
-               $owner= Owner::create([
+        try {
+            DB::transaction(function () use ($request) {
+                $owner = Owner::create([
                     'name' => $request->name,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                 ]);
                 Shop::create([
-                    'owner_id'=>$owner->id,
-                    'name'=>'店名を入力してください',
-                    'information'=>'',
-                    'filename'=>'',
-                    'is_selling'=>true
+                    'owner_id' => $owner->id,
+                    'name' => '店名を入力してください',
+                    'information' => '',
+                    'filename' => '',
+                    'is_selling' => true
                 ]);
-    },2);
-}catch(Throwable $e){
-    Log::error($e);
-    throw $e;
-}
+            }, 2);
+        } catch (Throwable $e) {
+            Log::error($e);
+            throw $e;
+        }
 
 
         return redirect()->route('admin.owners.index')
-       ->with([
-            'message' => '我が追加したのだ',
-            'status' => 'info'
-        ]);
+            ->with([
+                'message' => '我が追加したのだ',
+                'status' => 'info'
+            ]);
     }
 
     /**
@@ -121,8 +122,8 @@ try{
      */
     public function edit($id)
     {
-        $owner=Owner::findOrFail($id);
-        return view('Admin.owners.edit',compact('owner'));
+        $owner = Owner::findOrFail($id);
+        return view('Admin.owners.edit', compact('owner'));
     }
 
     /**
@@ -134,19 +135,18 @@ try{
      */
     public function update(Request $request, $id)
     {
-        $owner=Owner::findOrFail($id);
-        $owner->name=$request->name;
+        $owner = Owner::findOrFail($id);
+        $owner->name = $request->name;
         $owner->email = $request->email;
         $owner->password = Hash::make($request->password);
         $owner->save();
 
         return redirect()
-        ->route('admin.owners.index')
-        ->with([
-            'message' => '我が書き換えたのだ',
-            'status' => 'info'
-        ]);
-
+            ->route('admin.owners.index')
+            ->with([
+                'message' => '我が書き換えたのだ',
+                'status' => 'info'
+            ]);
     }
 
     /**
@@ -160,18 +160,21 @@ try{
         Owner::findOrFail($id)->delete();
 
         return redirect()
-        ->route('admin.owners.index')
-        ->with(['message'=>'我が消したのだ',
-    'status'=>'alert']);
+            ->route('admin.owners.index')
+            ->with([
+                'message' => '我が消したのだ',
+                'status' => 'alert'
+            ]);
     }
 
-    public function expiredOwnerIndex(){
-        $expiredOwners=Owner::onlyTrashed()->get();
-        return view('admin.expired-owners',compact('expiredOwners'));
+    public function expiredOwnerIndex()
+    {
+        $expiredOwners = Owner::onlyTrashed()->get();
+        return view('admin.expired-owners', compact('expiredOwners'));
     }
-    public function expiredOwnerDestroy($id){
+    public function expiredOwnerDestroy($id)
+    {
         Owner::onlyTrashed()->findOrFail($id)->forceDelete();
         return redirect()->route('admin.expired-owners.index');
-
     }
 }

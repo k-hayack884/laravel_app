@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UploadImageRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\image;
+use App\Services\ImageService;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -22,7 +24,7 @@ class ImageController extends Controller
 
             $id = $request->route()->parameter('image'); //直接入力した数字
             if (!is_null($id)) {
-                $imagesOwnerId = Shop::findOrFail($id)->owner->id;
+                $imagesOwnerId = Image::findOrFail($id)->owner->id;
                 $imageId = (int)$imagesOwnerId;
                 if ($imageId !== Auth::id()) {
                     abort(404);
@@ -34,8 +36,8 @@ class ImageController extends Controller
     public function index()
     {
         $images=Image::where('owner_id',Auth::id())
-        ->orderBy('update_at','desc')
-        ->paginate(1);
+        ->orderBy('updated_at','desc')
+        ->paginate(4);
 
         return view('owner.images.index',compact('images'));
     }
@@ -60,6 +62,22 @@ class ImageController extends Controller
     public function store(UploadImageRequest $request)
     {
         // dd($request);
+        $imageFiles=$request->file('files');
+        if(!is_null($imageFiles)){
+            foreach($imageFiles as $imageFile){
+                $fileNameStore=ImageService::upload($imageFile,'products');
+                Image::create([
+                    'owner_id'=>Auth::id(),
+                    'filename'=>$fileNameStore
+                ]);
+            }
+        }
+        return redirect()
+        ->route('owner.images.index')
+        ->with([
+            'message' => '画像は拾った',
+            'status' => 'info'
+        ]);;
     }
 
     /**
@@ -68,10 +86,10 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    // public function show($id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -81,7 +99,8 @@ class ImageController extends Controller
      */
     public function edit($id)
     {
-        //
+        $image = Image::findOrFail($id);
+        return view('owner.images.edit', compact('image'));
     }
 
     /**
@@ -93,7 +112,17 @@ class ImageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => ['string', 'max:50'],
+        ]);
+        $image = Image::findOrFail($id);
+        $image->title = $request->title;
+        $image->save();
+        return redirect()->route('owner.images.index')
+        ->with([
+            'message' => '我が書き換えたのだ',
+            'status' => 'info'
+        ]);
     }
 
     /**
@@ -104,6 +133,18 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $image=Image::findOrFail($id);
+        $filePath='public/products'.$image->filename;
+        if(Storage::exists($filePath)){
+            Storage::delete($filePath);
+        }
+        Image::findOrFail($id)->delete();
+
+        return redirect()
+            ->route('owner.images.index')
+            ->with([
+                'message' => '我が消したのだ',
+                'status' => 'alert'
+            ]);
     }
 }
