@@ -7,7 +7,7 @@ use InterventionImage;
 
 class ImageService
 {
-    public function upload($imageFile, $folderName)
+    public static function upload($imageFile, $folderName)
     {
 
         $fileName = uniqid(rand() . '_');
@@ -15,6 +15,7 @@ class ImageService
         $fileNameToStore = $fileName . '.' . $extension;
         $resizedImage = InterventionImage::make($imageFile)->resize(1920, 1080)->encode();
         Storage::put('public/' . $folderName . '/' . $fileNameToStore, $resizedImage);
-        return $folderName;
+
+        return $fileNameToStore;
     }
 }
