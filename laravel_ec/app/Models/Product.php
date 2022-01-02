@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Shop;
 use App\Models\Image;
+use App\Models\Stock;
 use App\Models\SecondaryCategory;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;

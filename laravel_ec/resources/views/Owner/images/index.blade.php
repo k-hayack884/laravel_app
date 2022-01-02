@@ -15,20 +15,17 @@
                             class="text-white bg-indigo-500 border-0 py-2 px-16 focus:outline-none hover:bg-indigo-600 rounded text-lg">新規登録</button>
                     </div>
                     <div class="flex flex-wrap">
-                    @foreach ($images as $image)
-                    <div class="w-1/4 p-2 md:p-4">
-                        <a href="{{ route('owner.images.edit',['image'=>$image->id])}}">
-                            <div class="border rounded-md p-2 md:p-4">
-
-
+                        @foreach ($images as $image)
+                        <div class="w-1/4 p-2 md:p-4">
+                            <a href="{{ route('owner.images.edit',['image'=>$image->id])}}">
+                                <div class="border rounded-md p-2 md:p-4">
                                     <x-thumbnail :filename="$image->filename" type="products"></x-thumbnail>
                                     <div class="text-gray-700"> {{ $image->title }}
+                                    </div>
                                 </div>
-
-                            </div>
-                        </a>
-                    </div>
-                    @endforeach
+                            </a>
+                        </div>
+                        @endforeach
                     </div>
                     {{ $images->links() }}
                 </div>
