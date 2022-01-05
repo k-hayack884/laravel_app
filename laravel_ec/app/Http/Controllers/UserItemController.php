@@ -10,6 +10,6 @@ class UserItemController extends Controller
 {
     public function index(){
         $products=Product::all();
-        return view('user.index');
+        return view('user.index',compact('products'));
     }
 }

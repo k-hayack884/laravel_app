@@ -24,6 +24,6 @@ Route::get('/', function () {
 
 Route::middleware('auth:users')
 ->group(function(){
-    Route::get('/',[ItemController::class,'index'])->name('items.index');
+    Route::get('/',[UserItemController::class,'index'])->name('items.index');
 });
 require __DIR__.'/auth.php';
