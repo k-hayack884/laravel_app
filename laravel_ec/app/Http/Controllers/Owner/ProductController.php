@@ -36,8 +36,8 @@ class ProductController extends Controller
     public function index()
     {
         // $products=Owner::findOrFail(Auth::id())->shop->product;
-        $ownerInfo=Owner::with('shop.product.imageFirst')
-        ->where('id',Auth::id())->get();
+        $ownerInfo = Owner::with('shop.product.imageFirst')
+            ->where('id', Auth::id())->get();
         // dd($OwnerInfo);
         // foreach($ownerInfo as $owner){
         //     foreach($owner->shop->product as $product){
@@ -48,41 +48,42 @@ class ProductController extends Controller
     }
     public function create()
     {
-        $shops=Shop::where('owner_id',Auth::id())->select('id','name')->get();
-        $images = Image::where('owner_id', Auth::id())->select('id', 'title','filename')
-        ->orderBy('updated_at','desc')
-        ->get();
+        $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
+        $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-        $categories=PrimaryCategory::with('secondary')
-        ->get();
-// dd($shops,$images,$categories);
-        return view('owner.products.create',compact('shops','images','categories'));
+        $categories = PrimaryCategory::with('secondary')
+            ->get();
+        // dd($shops,$images,$categories);
+        return view('owner.products.create', compact('shops', 'images', 'categories'));
     }
-    
-    public function store(productRequest $request){
+
+    public function store(productRequest $request)
+    {
         // dd($request);
-      
+
 
         try {
             DB::transaction(function () use ($request) {
                 $product = Product::create([
                     'name' => $request->name,
                     'information' => $request->information,
-                    'price' => $request->price,            
-                    'sort_order' =>$request->sort_order ,
-                    'shop_id' =>$request->shop_id ,
-                    'secondary_category_id' =>$request->category ,
-                    'image1' =>$request->image1 ,
-                    'image2' =>$request->image2 ,
+                    'price' => $request->price,
+                    'sort_order' => $request->sort_order,
+                    'shop_id' => $request->shop_id,
+                    'secondary_category_id' => $request->category,
+                    'image1' => $request->image1,
+                    'image2' => $request->image2,
                     'image3' => $request->image3,
-                    'image4' =>$request->image4 ,
-                    'is_selling' =>$request->is_selling,
-        
+                    'image4' => $request->image4,
+                    'is_selling' => $request->is_selling,
+
                 ]);
                 Stock::create([
                     'product_id' => $product->id,
-                    'type'=>1,
-                    'quantity'=>$request->quantity
+                    'type' => 1,
+                    'quantity' => $request->quantity
                 ]);
             }, 2);
         } catch (Throwable $e) {
@@ -90,68 +91,69 @@ class ProductController extends Controller
             throw $e;
         }
         return redirect()->route('owner.products.index')
-        ->with([
-            'message' => '我が追加したのだ',
-            'status' => 'info'
-        ]);
-
+            ->with([
+                'message' => '我が追加したのだ',
+                'status' => 'info'
+            ]);
     }
-    public function edit($id){
-        $product=Product::findOrFail($id);
-        $quantity=Stock::where('product_id',$product->id)
-        ->sum('quantity');
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $quantity = Stock::where('product_id', $product->id)
+            ->sum('quantity');
 
-        $shops=Shop::where('owner_id',Auth::id())->select('id','name')->get();
-        $images = Image::where('owner_id', Auth::id())->select('id', 'title','filename')
-        ->orderBy('updated_at','desc')
-        ->get();
+        $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
+        $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-        $categories=PrimaryCategory::with('secondary')
-        ->get();
-        return view('owner.products.edit',compact('product','quantity','shops','images','categories'));
+        $categories = PrimaryCategory::with('secondary')
+            ->get();
+        return view('owner.products.edit', compact('product', 'quantity', 'shops', 'images', 'categories'));
     }
-    public function update(productRequest $request ,$id){
+    public function update(productRequest $request, $id)
+    {
         $request->validate([
             'current_quantity' => ['required', 'integer'],
 
         ]);
-        $product=Product::findOrFail($id);
-        $quantity=Stock::where('product_id',$product->id)
-        ->sum('quantity');
-        if($request->current_quantity !==$quantity){
+        $product = Product::findOrFail($id);
+        $quantity = Stock::where('product_id', $product->id)
+            ->sum('quantity');
+        if ($request->current_quantity !== $quantity) {
             $id = $request->route()->parameter('product');
-            return redirect()->route('owner.products.edit',['product'=>$id])
-            ->with([
-                'message' => '何い!!在庫数を書き換えただとぉ!!',
-                'status' => 'alert'
-            ]);
-        }else{
+            return redirect()->route('owner.products.edit', ['product' => $id])
+                ->with([
+                    'message' => '何い!!在庫数を書き換えただとぉ!!',
+                    'status' => 'alert'
+                ]);
+        } else {
             try {
-                DB::transaction(function () use ($request,$product) {
+                DB::transaction(function () use ($request, $product) {
 
-                        $product->name = $request->name;
-                        $product->information =$request->information;
-                        $product->price = $request->price;          
-                        $product->sort_order =$request->sort_order ;
-                        $product->shop_id =$request->shop_id ;
-                        $product->secondary_category_id =$request->category ;
-                        $product->image1 =$request->image1 ;
-                        $product->image2 =$request->image2 ;
-                        $product->image3 = $request->image3;
-                        $product->image4 =$request->image4 ;
-                        $product->is_selling =$request->is_selling;
-                        $product->save();
-if($request->type===\Constant::PRODUCT_LIST['add']){
-    $newQuantity=$request->quantity;
-}
-if($request->type===\Constant::PRODUCT_LIST['reduce']){
-    $newQuantity=$request->quantity*-1;
-}
+                    $product->name = $request->name;
+                    $product->information = $request->information;
+                    $product->price = $request->price;
+                    $product->sort_order = $request->sort_order;
+                    $product->shop_id = $request->shop_id;
+                    $product->secondary_category_id = $request->category;
+                    $product->image1 = $request->image1;
+                    $product->image2 = $request->image2;
+                    $product->image3 = $request->image3;
+                    $product->image4 = $request->image4;
+                    $product->is_selling = $request->is_selling;
+                    $product->save();
+                    if ($request->type === \Constant::PRODUCT_LIST['add']) {
+                        $newQuantity = $request->quantity;
+                    }
+                    if ($request->type === \Constant::PRODUCT_LIST['reduce']) {
+                        $newQuantity = $request->quantity * -1;
+                    }
 
                     Stock::create([
                         'product_id' => $product->id,
-                        'type'=>$request->type,
-                        'quantity'=>$newQuantity,
+                        'type' => $request->type,
+                        'quantity' => $newQuantity,
                     ]);
                 }, 2);
             } catch (Throwable $e) {
@@ -159,11 +161,21 @@ if($request->type===\Constant::PRODUCT_LIST['reduce']){
                 throw $e;
             }
             return redirect()->route('owner.products.index')
-            ->with([
-                'message' => '商品情報を書き換えたのだ',
-                'status' => 'info'
-            ]);
+                ->with([
+                    'message' => '商品情報を書き換えたのだ',
+                    'status' => 'info'
+                ]);
         }
     }
-        
+    public function destory($id){
+        $product=Product::findOrFail($id);
+
+        return redirect()
+            ->route('owner.prpduct.index')
+            ->with([
+                'message' => '我が消したのだ',
+                'status' => 'alert'
+            ]);
+    }
+    
 }

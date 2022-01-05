@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UploadImageRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Image;
+use App\Models\Product;
 use App\Services\ImageService;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,11 +36,11 @@ class ImageController extends Controller
     }
     public function index()
     {
-        $images=Image::where('owner_id',Auth::id())
-        ->orderBy('updated_at','desc')
-        ->paginate(4);
+        $images = Image::where('owner_id', Auth::id())
+            ->orderBy('updated_at', 'desc')
+            ->paginate(4);
 
-        return view('owner.images.index',compact('images'));
+        return view('owner.images.index', compact('images'));
     }
 
 
@@ -62,22 +63,22 @@ class ImageController extends Controller
     public function store(UploadImageRequest $request)
     {
         // dd($request);
-        $imageFiles=$request->file('files');
-        if(!is_null($imageFiles)){
-            foreach($imageFiles as $imageFile){
-                $fileNameStore=ImageService::upload($imageFile,'products');
+        $imageFiles = $request->file('files');
+        if (!is_null($imageFiles)) {
+            foreach ($imageFiles as $imageFile) {
+                $fileNameStore = ImageService::upload($imageFile, 'products');
                 Image::create([
-                    'owner_id'=>Auth::id(),
-                    'filename'=>$fileNameStore
+                    'owner_id' => Auth::id(),
+                    'filename' => $fileNameStore
                 ]);
             }
         }
         return redirect()
-        ->route('owner.images.index')
-        ->with([
-            'message' => '画像は拾った',
-            'status' => 'info'
-        ]);;
+            ->route('owner.images.index')
+            ->with([
+                'message' => '画像は拾った',
+                'status' => 'info'
+            ]);;
     }
 
     /**
@@ -119,10 +120,10 @@ class ImageController extends Controller
         $image->title = $request->title;
         $image->save();
         return redirect()->route('owner.images.index')
-        ->with([
-            'message' => '我が書き換えたのだ',
-            'status' => 'info'
-        ]);
+            ->with([
+                'message' => '我が書き換えたのだ',
+                'status' => 'info'
+            ]);
     }
 
     /**
@@ -133,9 +134,36 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-        $image=Image::findOrFail($id);
-        $filePath='public/products'.$image->filename;
-        if(Storage::exists($filePath)){
+        $image = Image::findOrFail($id);
+        $imageInProducts = Product::where('image1', $image->id)
+            ->orwhere('image2', $image->id)
+            ->orwhere('image3', $image->id)
+            ->orwhere('image4', $image->id)
+            ->get();
+
+        if ($imageInProducts) {
+            $imageInProducts->each(function ($product) use ($image) {
+                if ($product->image1 === $image->id) {
+                    $product->image1 = null;
+                    $product->save();
+                }
+                if ($product->image2 === $image->id) {
+                    $product->image2 = null;
+                    $product->save();
+                }
+                if ($product->image3 === $image->id) {
+                    $product->image3 = null;
+                    $product->save();
+                }
+                if ($product->image4 === $image->id) {
+                    $product->image4 = null;
+                    $product->save();
+                }
+            });
+        }
+
+        $filePath = 'public/products' . $image->filename;
+        if (Storage::exists($filePath)) {
             Storage::delete($filePath);
         }
         Image::findOrFail($id)->delete();
