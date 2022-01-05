@@ -29,6 +29,34 @@ class ShopSeeder extends Seeder
                 'filename' => '',
                 'is_selling' => true
             ],
+             [
+                'owner_id' => 3,
+                'name' => 'シャークショップ',
+                'information' => 'イラっとくるぜ！',
+                'filename' => '',
+                'is_selling' => true
+            ],
+            [
+                'owner_id' => 4,
+                'name' => 'シャークショップ',
+                'information' => 'イラっとくるぜ！',
+                'filename' => '',
+                'is_selling' => true
+            ],
+            [
+                'owner_id' => 5,
+                'name' => 'シャークショップ',
+                'information' => 'イラっとくるぜ！',
+                'filename' => '',
+                'is_selling' => true
+            ],
+            [
+                'owner_id' => 6,
+                'name' => 'シャークショップ',
+                'information' => 'イラっとくるぜ！',
+                'filename' => '',
+                'is_selling' => true
+            ],
         ]);
     }
 }

@@ -1,3 +1,13 @@
+## udemy Laravel講座
+
+## インストール方法
+
+## ダミーデータは php artisan storage:link してね
+storage/app/public/productsフォルダを作って保存
+
+##
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
