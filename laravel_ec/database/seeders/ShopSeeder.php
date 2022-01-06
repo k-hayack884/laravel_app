@@ -19,42 +19,42 @@ class ShopSeeder extends Seeder
                 'owner_id'=>1,
                 'name' => 'カードショップ',
                 'information' => 'カード10枚発売中',
-                'filename' => '',
+                'filename' => 'fish_shark.png',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 2,
                 'name' => 'ユートのお店',
                 'information' => 'デュエルで笑顔を',
-                'filename' => '',
+                'filename' => 'fish_kue2.png',
                 'is_selling' => true
             ],
              [
                 'owner_id' => 3,
-                'name' => 'シャークショップ',
-                'information' => 'イラっとくるぜ！',
-                'filename' => '',
+                'name' => 'サティスファクションタウン',
+                'information' => '俺達の満足はこれからだ！',
+                'filename' => 'fish_tai.png',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 4,
                 'name' => 'シャークショップ',
                 'information' => 'イラっとくるぜ！',
-                'filename' => '',
+                'filename' => 'fish_buri.png',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 5,
                 'name' => 'シャークショップ',
                 'information' => 'イラっとくるぜ！',
-                'filename' => '',
+                'filename' => 'fish_suzuki.png',
                 'is_selling' => true
             ],
             [
                 'owner_id' => 6,
                 'name' => 'シャークショップ',
                 'information' => 'イラっとくるぜ！',
-                'filename' => '',
+                'filename' => 'fish_shark.png',
                 'is_selling' => true
             ],
         ]);

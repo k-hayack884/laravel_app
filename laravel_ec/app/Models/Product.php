@@ -38,15 +38,15 @@ class Product extends Model
     }
     public function imageSecond()
     {
-        return $this->belongsTo(Image::class,'image1','id');
+        return $this->belongsTo(Image::class,'image2','id');
     }
     public function imageThird()
     {
-        return $this->belongsTo(Image::class,'image1','id');
+        return $this->belongsTo(Image::class,'image3','id');
     }
     public function imageFourth()
     {
-        return $this->belongsTo(Image::class,'image1','id');
+        return $this->belongsTo(Image::class,'image4','id');
     }
     public function category()
     {

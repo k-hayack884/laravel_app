@@ -4,7 +4,7 @@
 
 ## ダミーデータは php artisan storage:link してね
 storage/app/public/productsフォルダを作って保存
-
+storage/app/public/shopsフォルダを作って保存
 ##
 
 
