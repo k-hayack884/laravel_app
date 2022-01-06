@@ -75,6 +75,8 @@
                                         }}</span>
                                     <span class="text-sm text-gray-700">円(税込)</span>
                                 </div>
+                                <form action="{{ route('user.cart.add') }}" method="post">
+                                    @csrf
                                 <div class="flex item-center"><span class="mr-3">数量</span>
 
                                     <div class="relative">
@@ -88,7 +90,8 @@
                                 </div>
                                 <button
                                     class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">カートに入れる</button>
-
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+</form>
                             </div>
                         </div>
                     </div>

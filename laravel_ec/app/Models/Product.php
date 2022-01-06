@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Shop;
 use App\Models\Image;
 use App\Models\Stock;
+use App\Models\User;
+
 use App\Models\SecondaryCategory;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,4 +54,9 @@ class Product extends Model
     {
         return $this->belongsTo(SecondaryCategory::class,'secondary_category_id');
     }
+    public function users(){
+        return $this->belongsToMany(User::class,'carts')
+        ->withPivot(['id','quantity']);
+    }
+
 }
