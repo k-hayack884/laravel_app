@@ -38,5 +38,6 @@ Route::prefix('cart')->middleware('auth:users')
     Route::get('/index', [CartController::class, 'index'])->name('cart.index');
     Route::post('add', [CartController::class, 'add'])->name('cart.add');
     Route::post('delete/{item}', [CartController::class, 'delete'])->name('cart.delete');
+    Route::get('checkout',[CartController::class, 'checkout'])->name('cart.checkout');
 });
 require __DIR__.'/auth.php';
