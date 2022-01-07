@@ -1,5 +1,5 @@
 <p>決済ページへリダイレクトします。</p>
-{{-- <script src="https://js.stripe.com/v3/"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script>
 //  const publicKey = '{{ $publicKey }}'
 //  const stripe = Stripe(publicKey)
@@ -11,7 +11,7 @@ const publicKey = '{{ $publicKey }}'
  stripe.redirectToCheckout({
  sessionId: '{{ $session->id }}'
  }).then(function (result) {
- window.location.href = '{{ route('user.cart.index') }}';
+ window.location.href = '{{ route('user.cart.cancel') }}';
  });
  }
-</script> --}}
+</script>
