@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Stock;
 use App\Models\Cart;
+use App\Models\Product;
 
 class CartController extends Controller
 {
@@ -57,39 +58,38 @@ class CartController extends Controller
     {
         $user = User::findOrFail(Auth::id());
         $products = $user->products; // 多対多のリレーション
-        $lineItems = [];
+        $line_items = [];
         //先に在庫を減らしてからstripeで決済
         foreach ($products as $product) {
-            $quantity='';
-            $quantity=Stock::where('product_id',$product->id)->sum('quantity');
-            if($product->pivot->quantity){
-                return view('user.cart.index');
-            }else{
-                $lineItem = [ //stripeのルールによる
+            $quantity = '';
+            $quantity = Stock::where('product_id', $product->id)->sum('quantity');
+            if ($product->pivot->quantity>$quantity) {
+                return redirect()->route('user.cart.index');
+            } else {
+                $line_item = [ //stripeのルールによる
                     'name' => $product->name,
                     'description' => $product->information,
                     'amount' => $product->price,
                     'currency' => 'jpy',
                     'quantity' => $product->pivot->quantity,
-    
+
                 ];
-                array_push($lineItems, $lineItem);
+                array_push($line_items, $line_item);
             }
-           
         }
         // dd($lineItems);
-foreach($products as $product){
-    Stock::create([
-        'product_id' => $product->id,
-        'type' => \Constant::PRODUCT_LIST['reduce'],
-        'quantity' => $product->pivot->quantity
-    ]);
-}
-dd('test');
-        \Stripe\Stripe::setApikey(env('STRIPE_SECRET_KEY'));
+        foreach ($products as $product) {
+            Stock::create([
+                'product_id' => $product->id,
+                'type' => \Constant::PRODUCT_LIST['reduce'],
+                'quantity' => $product->pivot->quantity*-1
+            ]);
+        }
+        // dd('test');
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         $session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
-            'line_items' => [$lineItems],
+            'line_items' => [$line_items],
             'mode' => 'payment',
             'success_url' => route('user.items.index'),
             'cancel_url' => route('user.cart.index'),
