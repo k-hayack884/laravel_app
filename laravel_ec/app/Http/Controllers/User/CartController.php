@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Stock;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Services\CartService;
+use App\Jobs\SendThanksMail;
+use App\Jobs\SendOrderedMail;
 
 class CartController extends Controller
 {
@@ -70,6 +73,18 @@ class CartController extends Controller
 
     public function checkout()
     {
+        ////
+        $items=Cart::where('user_id',Auth::id())->get();
+
+        $products=CartService::getitemsInCart($items);
+        $user = User::findOrFail(Auth::id());
+
+        SendThanksMail::dispatch($products,$user);
+        foreach($products as $product){
+            SendOrderedMail::dispatch($product,$user);
+        }
+        dd('俺からのファンサービスだ');
+        ////
         $user = User::findOrFail(Auth::id());
         $products = $user->products; // 多対多のリレーション
         $line_items = [];
